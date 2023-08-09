@@ -36,3 +36,8 @@ vim.keymap.set("n", "<leader>cf", ":copen<CR>", {noremap = true})
 
 -- For renaming/substituting the word under the cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- Auto-closing brackets
+vim.keymap.set("i", "(", "()<left>")
+vim.keymap.set("i", "[", "[]<left>")
+vim.keymap.set("i", "{", "{}<left>")
