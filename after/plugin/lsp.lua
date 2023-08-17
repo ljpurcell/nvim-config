@@ -6,26 +6,35 @@ lsp.ensure_installed({
     'tsserver',
     'gopls',
     'pyright',
+    'lua_ls'
 })
 
 -- Fix Undefined global 'vim'
 lsp.nvim_workspace()
 
-
 local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
-    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-    ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    ["<C-Space>"] = cmp.mapping.complete(),
+    ['<C-[>'] = cmp.mapping.select_prev_item(cmp_select),
+    ['<C-]>'] = cmp.mapping.select_next_item(cmp_select),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<Esc>'] = cmp.mapping.abort()
 })
 
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
+--[[
+cmp.setup({
+    experimental = {
+        ghost_text = true
+    }
+})
+--]]
+
 lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    mapping = cmp_mappings,
 })
 
 lsp.set_preferences({
@@ -71,9 +80,12 @@ lsp.on_attach(function(client, bufnr)
     end, { desc = 'Format current buffer with LSP' })
 
     -- Auto format on write
-    vim.api.nvim_create_autocmd('BufWritePre', { callback = function()
-        vim.lsp.buf.format()
-    end, desc = 'Format current buffer on write' })
+    vim.api.nvim_create_autocmd('BufWritePre', {
+        callback = function()
+            vim.lsp.buf.format()
+        end,
+        desc = 'Format current buffer on write'
+    })
 
     -- Diagnostic keymaps
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })

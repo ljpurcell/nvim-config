@@ -35,12 +35,13 @@ return require('packer').startup(function(use)
 	})
 
 	use({
-		'rose-pine/neovim',
-		as = 'rose-pine',
-		config = function()
-			vim.cmd('colorscheme rose-pine')
-		end
-	})
+	-- Theme inspired by Atom
+    'folke/tokyonight.nvim',
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'tokyonight-moon'
+    end,
+  })
 
 
 
@@ -80,26 +81,13 @@ return require('packer').startup(function(use)
 	-- Useful plugin to show you pending keybinds.
 	use({ 'folke/which-key.nvim', opts = {} })
 
-	use({
-		-- Adds git releated signs to the gutter, as well as utilities for managing changes
-		'lewis6991/gitsigns.nvim',
-		opts = {
-			-- See `:help gitsigns.txt`
-			signs = {
-				add = { text = '+' },
-				change = { text = '~' },
-				delete = { text = '_' },
-				topdelete = { text = '‾' },
-				changedelete = { text = '~' },
-			},
-		},
-	})
-
 	use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
 	use('ThePrimeagen/harpoon')
 
 	use('mbbill/undotree')
+
+    use('lewis6991/gitsigns.nvim')
 
 -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
