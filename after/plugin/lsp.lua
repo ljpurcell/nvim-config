@@ -1,4 +1,6 @@
 local lsp = require("lsp-zero")
+local cmp = require('cmp')
+local luasnip = require('luasnip')
 
 lsp.preset("recommended")
 
@@ -12,7 +14,6 @@ lsp.ensure_installed({
 -- Fix Undefined global 'vim'
 lsp.nvim_workspace()
 
-local cmp = require('cmp')
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-[>'] = cmp.mapping.select_prev_item(cmp_select),
@@ -25,13 +26,22 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
---[[
 cmp.setup({
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end,
+    },
     experimental = {
         ghost_text = true
-    }
+    },
+    sources = cmp.config.sources({
+        { name = 'nvim-lsp' },
+        { name = 'luasnip' },
+    }, {
+        { name = 'buffer', keyword_length = 5 },
+    })
 })
---]]
 
 lsp.setup_nvim_cmp({
     mapping = cmp_mappings,

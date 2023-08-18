@@ -32,7 +32,7 @@ vim.keymap.set("n", "<leader>d", "\"+d")
 vim.keymap.set("v", "<leader>d", "\"+d")
 
 -- QuickFix list
-vim.keymap.set("n", "<leader>cf", ":copen<CR>", {noremap = true})
+vim.keymap.set("n", "<leader>cf", ":copen<CR>", { noremap = true })
 
 -- For renaming/substituting the word under the cursor
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
@@ -41,3 +41,6 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 vim.keymap.set("i", "(", "()<left>")
 vim.keymap.set("i", "[", "[]<left>")
 vim.keymap.set("i", "{", "{}<left>")
+
+-- Clear search highlighting
+vim.keymap.set("n", "<C-c>", ":noh<CR>")
