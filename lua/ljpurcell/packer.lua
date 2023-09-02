@@ -47,25 +47,25 @@ return require('packer').startup(function(use)
     use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v1.x',
-        requires = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
-
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'hrsh7th/cmp-nvim-lua' },
-        }
     }
+
+    -- LSP Support
+    use 'neovim/nvim-lspconfig'
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
+
+    -- Autocompletion
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-nvim-lua'
 
     -- Adds LSP completion capabilities
     use 'hrsh7th/cmp-nvim-lsp'
 
     -- Snippet Engine & its associated nvim-cmp source
-    use 'L3MON4D3/LuaSnip'
+    use "L3MON4D3/LuaSnip"
+    use "rafamadriz/friendly-snippets"
     use 'saadparwaiz1/cmp_luasnip'
 
 

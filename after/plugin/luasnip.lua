@@ -1,7 +1,7 @@
 if not pcall(require, "luasnip") then
     return
 end
-
+require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/lua/ljpurcell/snips/" })
 local ls = require "luasnip"
 local types = require "luasnip.util.types"
 

@@ -36,10 +36,11 @@ cmp.setup({
         ghost_text = true
     },
     sources = cmp.config.sources({
-        { name = 'nvim-lsp' },
+        { name = 'nvim_lsp', max_item_count = 6 },
         { name = 'luasnip' },
-    }, {
-        { name = 'buffer', keyword_length = 5 },
+        { name = 'path' },
+        { name = 'nvim_lua' },
+        { name = 'buffer',   max_item_count = 3, keyword_length = 5 },
     })
 })
 
@@ -92,7 +93,11 @@ lsp.on_attach(function(client, bufnr)
     -- Auto format on write
     vim.api.nvim_create_autocmd('BufWritePre', {
         callback = function()
-            vim.lsp.buf.format()
+            if vim.bo.filetype == "python" then
+                vim.cmd([[!black %]])
+            else
+                vim.lsp.buf.format()
+            end
         end,
         desc = 'Format current buffer on write'
     })
