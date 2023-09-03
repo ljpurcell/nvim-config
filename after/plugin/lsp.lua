@@ -87,20 +87,12 @@ lsp.on_attach(function(client, bufnr)
 
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-        vim.lsp.buf.format()
+        if vim.bo.filetype == "python" then
+            vim.cmd([[!black %]])
+        else
+            vim.lsp.buf.format()
+        end
     end, { desc = 'Format current buffer with LSP' })
-
-    -- Auto format on write
-    vim.api.nvim_create_autocmd('BufWritePre', {
-        callback = function()
-            if vim.bo.filetype == "python" then
-                vim.cmd([[!black %]])
-            else
-                vim.lsp.buf.format()
-            end
-        end,
-        desc = 'Format current buffer on write'
-    })
 
     -- Diagnostic keymaps
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
