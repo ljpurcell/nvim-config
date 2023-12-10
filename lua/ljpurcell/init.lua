@@ -1,5 +1,5 @@
 require('ljpurcell.remap')
-require('ljpurcell.packer')
+require('ljpurcell.lazy')
 require('ljpurcell.set')
 require("ljpurcell.snips")
 
