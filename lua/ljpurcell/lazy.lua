@@ -130,7 +130,8 @@ local plugins = {
 
     {
         'windwp/nvim-autopairs',
-        dependencies = { 'nvim-autopairs' }
+        event = "InsertEnter",
+        opts = {} -- this is equalent to setup({}) function
     },
 
     -- Adds LSP completion capabilities
