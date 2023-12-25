@@ -21,6 +21,9 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- Maintains current paste buffer when pasting over the top of text
 vim.keymap.set("x", "<leader>p", "\"_dP")
 
+-- Yank all
+vim.keymap.set("n", "yA", "ggVGy")
+
 -- For yanking into system clipboard
 vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
@@ -38,3 +41,9 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- Clear search highlighting
 vim.keymap.set("n", "<C-c>", ":noh<CR>")
+
+-- Create a command `:waq` to write all and save
+vim.api.nvim_create_user_command('WQ', function (_)
+    vim.cmd('wa')
+    vim.cmd('q')
+end, { desc = 'Write all changed files and quit vim' })
