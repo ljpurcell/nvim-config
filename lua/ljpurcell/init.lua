@@ -1,7 +1,6 @@
 require('ljpurcell.remap')
 require('ljpurcell.lazy')
 require('ljpurcell.set')
-require("ljpurcell.snips")
 
 
 -- [[ Setting options ]]

@@ -1,1 +1,0 @@
-require("ljpurcell.snips.go")
