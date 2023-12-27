@@ -45,5 +45,5 @@ vim.keymap.set("n", "<C-c>", ":noh<CR>")
 -- Create a command `:waq` to write all and save
 vim.api.nvim_create_user_command('WQ', function (_)
     vim.cmd('wa')
-    vim.cmd('q')
+    vim.cmd('qa')
 end, { desc = 'Write all changed files and quit vim' })

@@ -87,11 +87,7 @@ lsp.on_attach(function(client, bufnr)
 
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-        if vim.bo.filetype == "python" then
-            vim.cmd([[!black %]])
-        else
             vim.lsp.buf.format()
-        end
     end, { desc = 'Format current buffer with LSP' })
 
     -- Diagnostic keymaps

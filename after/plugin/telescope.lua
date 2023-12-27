@@ -5,7 +5,7 @@ pcall(require('telescope').load_extension, 'fzf')
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]ile' })
-vim.keymap.set('n', '<leader>fw', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>fw', require('telescope.builtin').live_grep, { desc = '[F]ind [W]ord' })
 
 
 vim.keymap.set('n', '<leader>fz', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -26,3 +26,8 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 
 -- GIT
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
+
+-- Allow luasnip to integrate with telescope
+require('telescope').load_extension('luasnip')
+
+vim.keymap.set('n', '<leader>ls', ':Telescope luasnip<CR>', { desc = 'List all luasnips for the current file type'})

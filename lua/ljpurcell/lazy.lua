@@ -141,6 +141,10 @@ local plugins = {
     { 'L3MON4D3/LuaSnip' },
     { 'rafamadriz/friendly-snippets' },
     { 'saadparwaiz1/cmp_luasnip' },
+    {
+        'benfowler/telescope-luasnip.nvim',
+        module = 'telescope._extensions.luasnip', -- if you wish to lazy-load
+    },
 
     { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
 

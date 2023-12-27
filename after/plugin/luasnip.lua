@@ -16,14 +16,6 @@ ls.config.set_config {
     -- Autosnippets:
     enable_autosnippets = true,
 
-    ext_opts = {
-        [types.choiceNode] = {
-            active = {
-                virt_text = { { " « ", "NonTest" } },
-            },
-        },
-    },
-
-    vim.keymap.set({ "i", "s" }, "<C-y>", function() ls.expand_or_jump() end, { silent = true }),
-    vim.keymap.set({ "i", "s" }, "<C-b>", function() ls.jump(-1) end, { silent = true }),
+    vim.keymap.set({ "i", "s" }, "<C-.>", function() ls.expand_or_jump() end, { silent = true }),
+    vim.keymap.set({ "i", "s" }, "<C-,>", function() ls.jump(-1) end, { silent = true }),
 }
