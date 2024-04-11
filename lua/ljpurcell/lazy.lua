@@ -32,6 +32,13 @@ local plugins = {
             "nvim-lua/plenary.nvim",
         },
     },
+    {
+        "olexsmir/gopher.nvim",
+        dependencies = { -- dependencies
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+    },
 
     {
         -- Theme inspired by Atom
