@@ -14,7 +14,7 @@ rm -rf ~/.local/share/nvim/
 
 ### Three:
 ```sh
-git clone https://github.com/ljpurcell/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/ljpurcell/nvim-config "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 ### Go!
