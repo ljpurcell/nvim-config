@@ -36,8 +36,8 @@ return {
 				["<C-p>"] = cmp.mapping.select_prev_item(),
 
 				-- Scroll the documentation window [b]ack / [f]orward
-				["<C-b>"] = cmp.mapping.scroll_docs(-4),
-				["<C-f>"] = cmp.mapping.scroll_docs(4),
+				["<C-->"] = cmp.mapping.scroll_docs(-4),
+				["<C-=>"] = cmp.mapping.scroll_docs(4),
 
 				-- Accept ([y]es) the completion.
 				["<C-y>"] = cmp.mapping.confirm({ select = true }),
@@ -47,12 +47,12 @@ return {
 				--  completions whenever it has completion options available.
 				["<C-Space>"] = cmp.mapping.complete({}),
 
-				["<C-l>"] = cmp.mapping(function()
+				["<C-f>"] = cmp.mapping(function()
 					if luasnip.expand_or_locally_jumpable() then
 						luasnip.expand_or_jump()
 					end
 				end, { "i", "s" }),
-				["<C-h>"] = cmp.mapping(function()
+				["<C-b>"] = cmp.mapping(function()
 					if luasnip.locally_jumpable(-1) then
 						luasnip.jump(-1)
 					end

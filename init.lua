@@ -13,11 +13,22 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ import = "plugins" },
 	{
-		"folke/tokyonight.nvim",
+		"rebelot/kanagawa.nvim",
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("tokyonight-night")
-			vim.cmd([[hi Comment gui=none]])
+			require("kanagawa").setup({
+				colors = {
+					theme = {
+						all = {
+							ui = {
+								bg_gutter = "none",
+							},
+						},
+					},
+				},
+			})
+
+			vim.cmd.colorscheme("kanagawa-dragon")
 		end,
 	},
 }, {
@@ -80,30 +91,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-local set = vim.opt_local
-
--- Set local settings for terminal buffers
-vim.api.nvim_create_autocmd("TermOpen", {
-	group = vim.api.nvim_create_augroup("custom-term-open", {}),
-	callback = function()
-		set.number = false
-		set.relativenumber = false
-		set.scrolloff = 0
-	end,
-})
-
--- Keymaps
-vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>")
-
--- Open a terminal at the bottom of the screen with a fixed height.
-vim.keymap.set("n", ",st", function()
-	vim.cmd.new()
-	vim.cmd.wincmd("J")
-	vim.api.nvim_win_set_height(0, 12)
-	vim.wo.winfixheight = true
-	vim.cmd.term()
-end)
-
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -122,8 +109,3 @@ vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
 vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
-
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
