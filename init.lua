@@ -52,13 +52,6 @@ require("lazy").setup({
 	},
 })
 
--- Filetype extensions
-vim.filetype.add({
-	extension = {
-		templ = "templ",
-	},
-})
-
 -- General settings
 vim.g.have_nerd_font = true
 vim.opt.number = true

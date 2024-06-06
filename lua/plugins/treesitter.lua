@@ -8,9 +8,16 @@ return {
 			enable = true,
 			additional_vim_regex_highlighting = { "ruby" },
 		},
-		indent = { enable = true, disable = { "ruby", "templ" } },
+		indent = { enable = true, disable = { "ruby" } },
 	},
 	config = function(_, opts)
 		require("nvim-treesitter.configs").setup(opts)
+
+		-- Filetype extensions
+		vim.filetype.add({
+			extension = {
+				templ = "templ",
+			},
+		})
 	end,
 }
