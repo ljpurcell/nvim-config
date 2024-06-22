@@ -1,19 +1,32 @@
+local start_insert_if_terminal = function()
+	local b = vim.api.nvim_get_current_buf()
+	local ft = vim.api.nvim_get_option_value("filetype", { buf = b })
+	if ft == "terminal" then
+		vim.cmd("startinsert")
+	end
+end
+
 return {
+
 	-- Move around windows
 	vim.keymap.set({ "n", "i", "v", "t" }, "<A-h>", function()
 		vim.cmd.wincmd("h")
+		start_insert_if_terminal()
 	end),
 
 	vim.keymap.set({ "n", "i", "v", "t" }, "<A-j>", function()
 		vim.cmd.wincmd("j")
+		start_insert_if_terminal()
 	end),
 
 	vim.keymap.set({ "n", "i", "v", "t" }, "<A-l>", function()
 		vim.cmd.wincmd("l")
+		start_insert_if_terminal()
 	end),
 
 	vim.keymap.set({ "n", "i", "v", "t" }, "<A-k>", function()
 		vim.cmd.wincmd("k")
+		start_insert_if_terminal()
 	end),
 
 	vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }),
