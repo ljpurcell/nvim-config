@@ -25,6 +25,6 @@ return {
 		vim.keymap.set("n", ".", require("oil").toggle_hidden)
 
 		-- Close
-		vim.keymap.set("n", "<Esc>-", require("oil").close)
+		vim.keymap.set("n", "+", require("oil").close)
 	end,
 }

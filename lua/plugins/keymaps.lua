@@ -50,7 +50,29 @@ return {
 	set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" }),
 	set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" }),
 	set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" }),
-	set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" }),
+	set("n", "<leader>q", function()
+		local function toggle_diagnostic_quickfix()
+			local loclist = vim.fn.getloclist(0)
+
+			if #loclist > 0 then
+				-- If the loclist has items, close it
+				vim.cmd("lclose")
+			else
+				-- If loclist is empty, populate and open it
+				vim.diagnostic.setloclist()
+				local new_loclist = vim.fn.getloclist(0)
+
+				if #new_loclist > 0 then
+					vim.cmd("lopen") -- Open if diagnostics were added
+				else
+					print("No diagnostics available.") -- Informative message
+				end
+			end
+		end
+
+		-- Key mapping to toggle the quickfix list
+		set("n", "<leader>qt", toggle_diagnostic_quickfix, { desc = "Toggle diagnostic quickfix list" })
+	end, { desc = "Open diagnostic [Q]uickfix list" }),
 
 	set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>'),
 	set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>'),
