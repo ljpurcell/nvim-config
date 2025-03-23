@@ -41,23 +41,19 @@ return {
 			},
 
 			on_attach = function(bufnr)
+				vim.keymap.set("n", "[g", function()
+					require("gitsigns").nav_hunk("prev")
+				end, { buffer = bufnr, desc = "[P]revious [G]it Hunk" })
+
+				vim.keymap.set("n", "]g", function()
+					require("gitsigns").nav_hunk("next")
+				end, { buffer = bufnr, desc = "[N]ext [G]it Hunk" })
+
 				vim.keymap.set(
 					"n",
-					"<leader>gp",
-					require("gitsigns").prev_hunk,
-					{ buffer = bufnr, desc = "[G]o to [P]revious Hunk" }
-				)
-				vim.keymap.set(
-					"n",
-					"<leader>gn",
-					require("gitsigns").next_hunk,
-					{ buffer = bufnr, desc = "[G]o to [N]ext Hunk" }
-				)
-				vim.keymap.set(
-					"n",
-					"<leader>ph",
+					"pg",
 					require("gitsigns").preview_hunk,
-					{ buffer = bufnr, desc = "[P]review [H]unk" }
+					{ buffer = bufnr, desc = "[P]review [G]it Hunk" }
 				)
 			end,
 		})

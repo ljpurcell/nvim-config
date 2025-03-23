@@ -13,22 +13,22 @@ local common_modes = { "n", "i", "v", "t" }
 return {
 
 	-- Move around windows
-	set(common_modes, "<A-h>", function()
+	set(common_modes, "<C-S-h>", function()
 		vim.cmd.wincmd("h")
 		start_insert_if_terminal()
 	end),
 
-	set(common_modes, "<A-j>", function()
+	set(common_modes, "<C-S-j>", function()
 		vim.cmd.wincmd("j")
 		start_insert_if_terminal()
 	end),
 
-	set(common_modes, "<A-l>", function()
+	set(common_modes, "<C-S-l>", function()
 		vim.cmd.wincmd("l")
 		start_insert_if_terminal()
 	end),
 
-	set({ "n", "i", "v", "t" }, "<A-k>", function()
+	set({ "n", "i", "v", "t" }, "<C-S-k>", function()
 		vim.cmd.wincmd("k")
 		start_insert_if_terminal()
 	end),
