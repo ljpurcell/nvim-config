@@ -1,5 +1,8 @@
 require("config.lazy")
 
+-- User Commands
+vim.api.nvim_create_user_command("Spellcheck", "setlocal spell spelllang=en_au", {})
+
 -- Autocommands
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -12,11 +15,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = { "*.css", "*.html", "*.templ" },
 	callback = function()
-		vim.cmd("TailwindSort")
+		local clients = vim.lsp.get_clients()
+		for _, client in pairs(clients) do
+			if client.name == "tailwindcss" then
+				vim.cmd("TailwindSort")
+				return
+			end
+		end
 	end,
 })
 
--- Terminal
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = vim.api.nvim_create_augroup("custom-term-open", {}),
 	callback = function()
@@ -25,6 +33,14 @@ vim.api.nvim_create_autocmd("TermOpen", {
 		vim.opt_local.scrolloff = 0
 
 		vim.bo.filetype = "terminal"
+	end,
+})
+
+-- Automatically run it when a markdown file is opened
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.cmd("Spellcheck")
 	end,
 })
 

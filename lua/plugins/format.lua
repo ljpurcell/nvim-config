@@ -23,6 +23,7 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			go = { "gofumpt" },
+			markdown = { "markdownfmt" },
 			sql = { "pg_format" },
 			json = { "jq" },
 			python = { "black" },
