@@ -36,22 +36,10 @@ vim.opt.hlsearch = true
 require("lazy").setup({
 	{ import = "plugins" },
 	{
-		"rebelot/kanagawa.nvim",
+		"RRethy/base16-nvim",
 		priority = 1000,
 		config = function()
-			require("kanagawa").setup({
-				colors = {
-					theme = {
-						all = {
-							ui = {
-								bg_gutter = "none",
-							},
-						},
-					},
-				},
-			})
-
-			vim.cmd.colorscheme("kanagawa-dragon")
+			vim.cmd.colorscheme("base16-grayscale-dark")
 		end,
 	},
 }, {
