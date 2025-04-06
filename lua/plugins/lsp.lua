@@ -83,6 +83,9 @@ return {
 			stylua = {},
 			tailwindcss = {},
 			templ = {},
+			ts_ls = {
+				filetypes = { "javascript" },
+			},
 		}
 
 		require("mason").setup()
