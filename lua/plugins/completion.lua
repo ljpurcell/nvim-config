@@ -66,6 +66,11 @@ return {
 				{ name = "luasnip" },
 				{ name = "buffer" },
 			},
+
+			performance = {
+				max_view_entries = 10,
+				fetching_timeout = 5,
+			},
 		})
 	end,
 }

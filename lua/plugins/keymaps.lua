@@ -8,36 +8,36 @@ end
 
 local set = vim.keymap.set
 
-local common_modes = { "n", "i", "v", "t" }
+local non_insert_modes = { "n", "v", "t" }
 
 return {
 
 	-- Move around windows
-	set(common_modes, "<leader>wh", function()
+	set(non_insert_modes, "<leader>wh", function()
 		vim.cmd.wincmd("h")
 		start_insert_if_terminal()
 	end),
 
-	set(common_modes, "<leader>wj", function()
+	set(non_insert_modes, "<leader>wj", function()
 		vim.cmd.wincmd("j")
 		start_insert_if_terminal()
 	end),
 
-	set(common_modes, "<leader>wl", function()
+	set(non_insert_modes, "<leader>wl", function()
 		vim.cmd.wincmd("l")
 		start_insert_if_terminal()
 	end),
 
-	set({ "n", "i", "v", "t" }, "<leader>wk", function()
+	set(non_insert_modes, "<leader>wk", function()
 		vim.cmd.wincmd("k")
 		start_insert_if_terminal()
 	end),
 
 	-- Resize windows
-	set({ "t", "v", "n" }, "<M-,>", "<c-w>5<"),
-	set({ "t", "v", "n" }, "<M-.>", "<c-w>5>"),
-	set({ "t", "v", "n" }, "<M-=>", "<C-W>+"),
-	set({ "t", "v", "n" }, "<M-->", "<C-W>-"),
+	set(non_insert_modes, "<M-,>", "<c-w>5<"),
+	set(non_insert_modes, "<M-.>", "<c-w>5>"),
+	set(non_insert_modes, "<M-=>", "<C-W>+"),
+	set(non_insert_modes, "<M-->", "<C-W>-"),
 
 	set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }),
 
