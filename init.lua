@@ -44,6 +44,23 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Print the visual selection in a file specific way
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "python" },
+	callback = function()
+		local esc = vim.api.nvim_replace_termcodes("<Esc>", true, true, true)
+		vim.fn.setreg("p", "yoprint('" .. esc .. "pa:', " .. esc .. "pa)" .. esc)
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "javascript" },
+	callback = function()
+		local esc = vim.api.nvim_replace_termcodes("<Esc>", true, true, true)
+		vim.fn.setreg("p", "yoconsole.log('" .. esc .. "pa:', " .. esc .. "pa)" .. esc)
+	end,
+})
+
 -- Toggle terminal on the RHS
 -- TODO: Return cursor to previous window and position
 vim.keymap.set({ "n", "i", "v", "t" }, "<C-t>", function()
