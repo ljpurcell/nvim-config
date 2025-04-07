@@ -25,11 +25,14 @@ return {
 				bottom_search = false, -- use a classic bottom cmdline for search
 				command_palette = true, -- position the cmdline and popupmenu together
 				long_message_to_split = true, -- long messages will be sent to a split
-				inc_rename = false, -- enables an input dialog for inc-rename.nvim
+				inc_rename = true, -- enables an input dialog for inc-rename.nvim
 				lsp_doc_border = true, -- add a border to hover docs and signature help
 			},
 
 			cmdline = {
+
+				view = "cmdline_popup", -- use the fancy popup instead of bottom line
+
 				---@type table<string, CmdlineFormat>
 				format = {
 					-- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
@@ -40,11 +43,33 @@ return {
 					cmdline = { pattern = "^:", icon = "", lang = "vim" },
 					search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
 					search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
-					filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+					filter = { pattern = "^:%s*!", icon = "$", lang = "bash" }, -- TODO: this does not work how I want
 					lua = { pattern = { "^:%s*lua%s+", "^:%s*lua%s*=%s*", "^:%s*=%s*" }, icon = "", lang = "lua" },
 					help = { pattern = "^:%s*he?l?p?%s+", icon = "" },
 					input = { view = "cmdline_input", icon = "󰥻 " }, -- Used by input()
 					-- lua = false, -- to disable a format, set to `false`
+				},
+			},
+
+			views = {
+				cmdline_popup = {
+					position = {
+						row = "10%",
+						col = "50%",
+					},
+					size = {
+						width = 90,
+						height = "auto",
+					},
+					border = {
+						style = "rounded",
+					},
+					win_options = {
+						winhighlight = {
+							Normal = "NormalFloat",
+							FloatBorder = "FloatBorder",
+						},
+					},
 				},
 			},
 		})
