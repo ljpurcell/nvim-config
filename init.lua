@@ -4,6 +4,27 @@ require("config.lazy")
 vim.api.nvim_create_user_command("Spellcheck", "setlocal spell spelllang=en_au", {})
 
 -- Autocommands
+
+-- Custom syntax highlighting for JavaScript in JSON
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "json",
+	callback = function()
+		vim.cmd([[
+      " Load JavaScript syntax
+      syntax include @JavaScript syntax/javascript.vim
+      
+      " Match multiline JavaScript in jsFunc values
+      syntax region jsonJavaScriptFunc start=/"jsFunc":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
+      
+      " Match multiline JavaScript in keyFunc values  
+      syntax region jsonJavaScriptKey start=/"keyFunc":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
+      
+      " Match valueDeserializer
+      syntax region jsonJavaScriptDeser start=/"valueDeserializer":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
+    ]])
+	end,
+})
+
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),

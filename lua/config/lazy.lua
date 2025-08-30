@@ -32,19 +32,41 @@ vim.opt.relativenumber = true
 vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 
+function _G.gitsigns_head()
+	local branch = vim.b.gitsigns_head
+	return branch and "[ " .. branch .. " ]" or ""
+end
+
+vim.o.statusline = " %{v:lua.gitsigns_head()} %f %= %l,%c  %P "
+
 -- Setup lazy.nvim
 require("lazy").setup({
 	{ import = "plugins" },
+
 	{
-		"RRethy/base16-nvim",
+		-- "scottmckendry/cyberdream.nvim",
+		-- lazy = false,
+		-- priority = 1000,
+		-- config = function()
+		-- 	vim.cmd("colorscheme cyberdream")
+		-- end,
+		--
+		"rebelot/kanagawa.nvim",
+		lazy = false,
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("base16-black-metal-gorgoroth")
-			vim.cmd("highlight TelescopeBorder guifg='#00ffff'")
-			vim.cmd("highlight TelescopeResultsTitle guifg='#ffffff' guibg='none'")
-			vim.cmd("highlight TelescopePromptTitle guifg='#ffffff' guibg='none'")
-			vim.cmd("highlight TelescopePreviewTitle guifg='#ffffff' guibg='none'")
+			vim.cmd("colorscheme kanagawa-wave")
 		end,
+
+		-- "RRethy/base16-nvim",
+		-- priority = 1000,
+		-- config = function()
+		-- 	vim.cmd.colorscheme("base16-black-metal-gorgoroth")
+		-- 	vim.cmd("highlight TelescopeBorder guifg='#00ffff'")
+		-- 	vim.cmd("highlight TelescopeResultsTitle guifg='#ffffff' guibg='none'")
+		-- 	vim.cmd("highlight TelescopePromptTitle guifg='#ffffff' guibg='none'")
+		-- 	vim.cmd("highlight TelescopePreviewTitle guifg='#ffffff' guibg='none'")
+		-- end,
 	},
 }, {
 	change_detection = {

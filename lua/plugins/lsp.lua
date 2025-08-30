@@ -55,21 +55,12 @@ return {
 				staticcheck = true,
 				usePlaceholders = true,
 			},
-			-- rust_analyzer = {},
+			rust_analyzer = {},
 			emmet_ls = {
 				filetypes = { "html", "templ" },
 			},
 			html = {
 				filetypes = { "html", "templ" },
-			},
-			pyright = {
-				settings = {
-					python = {
-						analysis = {
-							autoImportCompletion = true, -- Enable automatic import suggestions
-						},
-					},
-				},
 			},
 			lua_ls = {
 				settings = {
@@ -80,6 +71,14 @@ return {
 					},
 				},
 			},
+			pyright = {
+				settings = {
+					python = {
+						checkOnType = true,
+					},
+				},
+			},
+
 			stylua = {},
 			tailwindcss = {},
 			templ = {},

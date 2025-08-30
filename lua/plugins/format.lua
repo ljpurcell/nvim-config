@@ -23,9 +23,13 @@ return {
 		formatters_by_ft = {
 			lua = { "stylua" },
 			go = { "gofumpt" },
+			html = { "superhtml" },
 			markdown = { "markdownfmt" },
 			sql = { "pg_format" },
+			javascript = { "js_beautify" },
 			json = { "jq" },
+			rust = { "rustfmt" },
+			templ = { "templ", "superhtml" },
 			python = { "black" },
 		},
 	},
