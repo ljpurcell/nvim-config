@@ -12,16 +12,22 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.cmd([[
       " Load JavaScript syntax
       syntax include @JavaScript syntax/javascript.vim
-      
+
       " Match multiline JavaScript in jsFunc values
       syntax region jsonJavaScriptFunc start=/"jsFunc":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
-      
-      " Match multiline JavaScript in keyFunc values  
+
+      " Match multiline JavaScript in keyFunc values
       syntax region jsonJavaScriptKey start=/"keyFunc":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
-      
+
       " Match valueDeserializer
       syntax region jsonJavaScriptDeser start=/"valueDeserializer":\s*"/ end=/"/ contains=@JavaScript skipnl skipwhite
     ]])
+	end,
+})
+
+vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+	callback = function()
+		vim.cmd("redrawstatus")
 	end,
 })
 
@@ -29,20 +35,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
-		vim.highlight.on_yank()
-	end,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = { "*.css", "*.html", "*.templ" },
-	callback = function()
-		local clients = vim.lsp.get_clients()
-		for _, client in pairs(clients) do
-			if client.name == "tailwindcss" then
-				vim.cmd("TailwindSort")
-				return
-			end
-		end
+		vim.hl.on_yank()
 	end,
 })
 
@@ -102,3 +95,23 @@ vim.keymap.set({ "n", "i", "v", "t" }, "<C-t>", function()
 	vim.cmd.term()
 	vim.cmd("startinsert")
 end)
+
+vim.lsp.config["ocamllsp"] = {
+	cmd = { "ocamllsp" },
+	filetypes = {
+		"ocaml",
+		"ocaml.interface",
+		"ocaml.menhir",
+		"ocaml.ocamllex",
+		"dune",
+		"reason",
+	},
+	root_markers = {
+		{ "dune-project", "dune-workspace" },
+		{ "*.opam",       "esy.json",      "package.json" },
+		".git",
+	},
+	settings = {},
+}
+
+vim.lsp.enable("ocamllsp")

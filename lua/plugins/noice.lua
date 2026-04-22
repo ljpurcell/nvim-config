@@ -12,6 +12,13 @@ return {
 	config = function()
 		require("noice").setup({
 
+			routes = {
+				{
+					filter = { event = "msg_showmode" },
+					view = "mini",
+				},
+			},
+
 			lsp = {
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 				override = {

@@ -24,6 +24,25 @@ return {
 		luasnip.config.setup({})
 		require("luasnip.loaders.from_vscode").lazy_load()
 
+		-- Custom snippets
+		local fmt = require("luasnip.extras.fmt").fmta
+		local s = luasnip.snippet
+		local t = luasnip.text_node
+		local i = luasnip.insert_node
+		luasnip.add_snippets("go", {
+			s(
+				"ie",
+				fmt(
+					[[
+		if <> != nil {
+			return <>
+		}
+		]],
+					{ i(1, "err"), i(2, "err") }
+				)
+			),
+		})
+
 		cmp.setup({
 			snippet = {
 				expand = function(args)

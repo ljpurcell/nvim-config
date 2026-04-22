@@ -17,45 +17,39 @@ return {
 	config = function()
 		require("telescope").setup({
 			defaults = {
-				-- Choose a layout strategy (horizontal, vertical, center, or cursor)
-				layout_strategy = "vertical",
-				-- Adjust layout dimensions and padding
-				layout_config = {
-					horizontal = {
-						-- Places the prompt at the top
-						prompt_position = "top",
-						-- Adjusts the width of the preview window relative to the overall window
-						preview_width = 0.55,
-						-- Adjusts the width allocated to the results
-						results_width = 0.8,
-						-- Sets the overall width and height relative to your Neovim window
-						width = 0.9,
-						height = 0.85,
-						-- Cutoff below which the preview window is disabled
-						preview_cutoff = 120,
-					},
-					vertical = {
-						-- In vertical mode, you can also add custom settings if needed
-						mirror = false,
-						height = 0.6,
-					},
-					-- If you use the center layout, you could define padding around it here
-					center = {
-						width = 0.8,
-						height = 0.8,
-					},
+
+				preview = { treesitter = false },
+				color_devicons = true,
+				sorting_strategy = "ascending",
+				borderchars = {
+					"─", -- top
+					"│", -- right
+					"─", -- bottom
+					"│", -- left
+					"┌", -- top-left
+					"┐", -- top-right
+					"┘", -- bottom-right
+					"└", -- bottom-left
 				},
-				-- You can also adjust transparency for floating windows here
-				-- winblend = 10,
-				-- Additional defaults like prompt prefix and selection caret for clarity
+
 				prompt_prefix = "🔍 ",
 				selection_caret = "➤ ",
-			},
-			extensions = {
-				["ui-select"] = {
-					require("telescope.themes").get_dropdown(),
+				layout_config = {
+					height = 100,
+					width = 400,
+					prompt_position = "top",
+					preview_cutoff = 40,
+
+					-- You can also adjust transparency for floating windows here
+					-- winblend = 10,
+					-- Additional defaults like prompt prefix and selection caret for clarity
 				},
-				fzf = {},
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown(),
+					},
+					fzf = {},
+				},
 			},
 		})
 

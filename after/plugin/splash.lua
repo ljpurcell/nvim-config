@@ -1,0 +1,17 @@
+-- local client = vim.lsp.start({
+-- 	name = "splash",
+-- 	cmd = { "/Users/lyndon/code/splash/splash" },
+-- 	on_attach = require("plugins.lsp").on_attach,
+-- })
+--
+-- if not client then
+-- 	vim.notify("Splash LSP could not attach")
+-- 	return
+-- end
+--
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "json",
+-- 	callback = function()
+-- 		vim.lsp.buf_attach_client(0, client)
+-- 	end,
+-- })

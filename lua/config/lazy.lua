@@ -37,36 +37,24 @@ function _G.gitsigns_head()
 	return branch and "[ " .. branch .. " ]" or ""
 end
 
-vim.o.statusline = " %{v:lua.gitsigns_head()} %f %= %l,%c  %P "
+function _G.macro_indicator()
+	local reg = vim.fn.reg_recording()
+	return reg ~= "" and ("recording @" .. reg .. "  ") or ""
+end
+
+vim.o.statusline = " %{v:lua.gitsigns_head()} %f %{v:lua.macro_indicator()}%= %l,%c  %P "
 
 -- Setup lazy.nvim
 require("lazy").setup({
 	{ import = "plugins" },
 
 	{
-		-- "scottmckendry/cyberdream.nvim",
-		-- lazy = false,
-		-- priority = 1000,
-		-- config = function()
-		-- 	vim.cmd("colorscheme cyberdream")
-		-- end,
-		--
 		"rebelot/kanagawa.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
 			vim.cmd("colorscheme kanagawa-wave")
 		end,
-
-		-- "RRethy/base16-nvim",
-		-- priority = 1000,
-		-- config = function()
-		-- 	vim.cmd.colorscheme("base16-black-metal-gorgoroth")
-		-- 	vim.cmd("highlight TelescopeBorder guifg='#00ffff'")
-		-- 	vim.cmd("highlight TelescopeResultsTitle guifg='#ffffff' guibg='none'")
-		-- 	vim.cmd("highlight TelescopePromptTitle guifg='#ffffff' guibg='none'")
-		-- 	vim.cmd("highlight TelescopePreviewTitle guifg='#ffffff' guibg='none'")
-		-- end,
 	},
 }, {
 	change_detection = {

@@ -1,46 +1,22 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "main",
+	lazy = false,
 	build = ":TSUpdate",
-	opts = {
-		ensure_installed = {
-			"bash",
-			"c",
-			"html",
-			"json",
-			"javascript",
-			"lua",
-			"luadoc",
-			"markdown",
-			"markdown_inline",
-			"regex",
-			"rust",
-			"templ",
-			"vim",
-			"vimdoc",
-			"python",
-			"scala",
-		},
-		auto_install = true,
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = false,
-		},
-		indent = { enable = true, disable = { "ruby" } },
-		incremental_selection = {
-			enable = true,
-		},
-		inject = {
-			enable = true,
-		},
-	},
-	config = function(_, opts)
-		require("nvim-treesitter.configs").setup(opts)
+	config = function()
+		local langs = { "svelte", "html", "javascript", "typescript", "css", "lua", "go", "python" }
 
-		-- Filetype extensions
-		vim.filetype.add({
-			extension = {
-				templ = "templ",
-			},
+		require('nvim-treesitter').install(langs)
+
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = langs,
+			callback = function()
+				vim.treesitter.start()
+
+				vim.wo.foldmethod = "expr"
+				vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+				vim.opt.foldlevel = 99 -- keeps open by default
+			end,
 		})
 	end,
 }
