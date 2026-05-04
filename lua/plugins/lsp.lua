@@ -26,8 +26,8 @@ return {
 
 			-- Diagnostic keymaps
 			map("<leader>e", vim.diagnostic.open_float, "Show diagnostic [E]rror")
-			map("[d", vim.diagnostic.goto_prev, "Go to previous [D]iagnostic")
-			map("]d", vim.diagnostic.goto_next, "Go to next [D]iagnostic")
+			map("[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, "Go to previous [D]iagnostic")
+			map("]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, "Go to next [D]iagnostic")
 			map("<leader>q", vim.diagnostic.setloclist, "Open diagnostics list")
 
 			local client = vim.lsp.get_client_by_id(event.data.client_id)
