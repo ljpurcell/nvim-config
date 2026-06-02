@@ -45,7 +45,9 @@ return {
 			},
 			prettier = {
 				command = "prettier",
-				args = { "--stdin-filepath", "$FILENAME" },
+				-- --prose-wrap preserve keeps our paragraph wrapping intact for
+				-- markdown; it's ignored for non-prose parsers (ts/css/html/...).
+				args = { "--stdin-filepath", "$FILENAME", "--prose-wrap", "preserve" },
 				stdin = true,
 			},
 			stir = {
@@ -62,10 +64,10 @@ return {
 			lua = { "stylua" },
 			go = { "gofumpt" },
 			html = { "prettier" },
-			markdown = { "markdownfmt" },
+			markdown = { "prettier" },
 			sql = { "sqruff" },
 			javascript = { "biome" },
-			json = { "stir" },
+			-- json = { "stir" },
 			rust = { "rustfmt" },
 			templ = { "templ", "superhtml" },
 			ocaml = { "ocamlformat" },
