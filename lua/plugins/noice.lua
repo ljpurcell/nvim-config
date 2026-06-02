@@ -20,6 +20,13 @@ return {
 			},
 
 			lsp = {
+				-- Disable noice's capture of LSP window/showMessage so our own
+				-- handler (in after/plugin/lsp-handlers.lua) can install via
+				-- LspAttach and survive. Noice releases the handler slot when
+				-- this is false.
+				message = {
+					enabled = false,
+				},
 				-- override markdown rendering so that **cmp** and other plugins use **Treesitter**
 				override = {
 					["vim.lsp.util.convert_input_to_markdown_lines"] = true,

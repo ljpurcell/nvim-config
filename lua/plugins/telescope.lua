@@ -1,7 +1,6 @@
 return {
 	"nvim-telescope/telescope.nvim",
 	event = "VimEnter",
-	branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{
@@ -44,12 +43,12 @@ return {
 					-- winblend = 10,
 					-- Additional defaults like prompt prefix and selection caret for clarity
 				},
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown(),
-					},
-					fzf = {},
+			},
+			extensions = {
+				["ui-select"] = {
+					require("telescope.themes").get_dropdown(),
 				},
+				fzf = {},
 			},
 		})
 
