@@ -29,6 +29,22 @@ return {
 		local s = luasnip.snippet
 		local t = luasnip.text_node
 		local i = luasnip.insert_node
+		local f = luasnip.function_node
+		local d = luasnip.dynamic_node
+		local sn = luasnip.snippet_node
+
+		-- Kebab-case a title into a URL slug: lowercase, runs of
+		-- non-alphanumerics → single "-", trimmed at both ends. Parens wrap the
+		-- whole chain so the trailing gsub's count return is dropped — otherwise
+		-- kebab returns (slug, count) and the count leaks into the next arg.
+		local function kebab(text)
+			local slug = (text or "")
+			    :lower()
+			    :gsub("[^%w]+", "-")
+			    :gsub("^%-+", "")
+			    :gsub("%-+$", "")
+			return slug
+		end
 		luasnip.add_snippets("go", {
 			s(
 				"ie",
@@ -39,6 +55,45 @@ return {
 		}
 		]],
 					{ i(1, "err"), i(2, "err") }
+				)
+			),
+		})
+
+		-- New blog post frontmatter (Astro `posts` collection). Trigger
+		-- "frontmatter" in a markdown buffer; created_at is filled with today's
+		-- date at expansion time. slug auto-derives from the title (kebab-cased)
+		-- yet stays editable. Defaults: is_published/in_progress = true.
+		luasnip.add_snippets("markdown", {
+			s(
+				"frontmatter",
+				fmt(
+					[[
+---
+title: "<>"
+description: "<>"
+is_published: <>
+in_progress: <>
+slug: "<>"
+created_at: "<>"
+---
+
+<>
+]],
+					{
+						i(1, "Title"),
+						i(2, "One-line description"),
+						i(3, "false"),
+						i(4, "true"),
+						-- slug pre-fills as kebab(title) and tracks edits to the
+						-- title node, but stays editable for a manual override.
+						d(5, function(args)
+							return sn(nil, { i(1, kebab(args[1][1])) })
+						end, { 1 }),
+						f(function()
+							return os.date("%Y-%m-%d")
+						end),
+						i(0),
+					}
 				)
 			),
 		})
