@@ -15,6 +15,14 @@ return {
 		log_level = vim.log.levels.DEBUG,
 		notify_on_error = false,
 		format_on_save = function(bufnr)
+			-- Disable formatting for anki deck files — they're authored by hand
+			-- and prettier mangles the deck syntax.
+			local bufname = vim.api.nvim_buf_get_name(bufnr)
+			local decks_dir = vim.fn.expand("~/personal/anki/decks") .. "/"
+			if bufname:sub(1, #decks_dir) == decks_dir then
+				return
+			end
+
 			local disable_filetypes = { c = true, cpp = true }
 			return {
 				timeout_ms = 2500,

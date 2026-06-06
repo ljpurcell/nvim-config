@@ -35,6 +35,16 @@ Frontmatter snippet
 - `created_at` uses a **function node** (`os.date` at expand time) — not a plain value, which would freeze to config-load time. Jump fields with `<C-f>`/`<C-b>` (Lyndon's LuaSnip keys); gloss/voice fields are left as marked placeholders for Lyndon to write.
 - `slug` is a **dynamic node** (`d(5, fn, {1})`) that derives from the `title` node via a `kebab()` helper (lowercase, runs of non-alphanumerics → single `-`, trimmed at ends) and updates live as the title is typed — yet stays editable for a manual override. This replaced a static `slug` placeholder that defaulted to `"slug"` and caused duplicate slugs across drafts. Editing the title *after* hand-customising the slug regenerates it (dynamic-node behaviour). Uniqueness depends on titles differing — there is deliberately no timestamp suffix (keeps URLs clean).
 
+Card snippet
+-----------
+
+- LuaSnip snippet in `lua/plugins/completion.lua` (sibling of `frontmatter`), trigger `card`, markdown filetype. Authors a flashcard block: `--- / Deck: <name> / Tags: <tag> / --- / <n>. <body>`. Apparent purpose is seeding Anki cards — deck = filename, and the two tag sets mirror the Knowledge vs Habits decks (see global `.refs/learning-approach.md`).
+- **Deck** — function node, `vim.fn.expand('%:t:r')` (filename, no dir/ext). Computed and skipped on jump; not editable. To make it hand-editable you'd swap `f` for an indexed `i`/`d`.
+- **Tags** — dynamic node `d(1, fn)` (no argnode refs) that reads the filename *itself* and returns `sn(nil, { c(1, {...}) })`: a choice node whose options branch on the filename (`knowledge` → technical/concepts/words; else social/disposition/actions). No cross-node reference is used or possible — the deck is a function node, which has no jump index to reference.
+- **Card number** — function node scanning the buffer (`nvim_buf_get_lines`) and counting card blocks (a `Deck: ` line bracketed by `---` above and `Tags: ` below, with `nil` guards at buffer edges). Returns `tostring(count)` with **no +1**: at expansion the new card's own lines are already in the buffer, so it counts itself (verified in a real buffer, per the project convention).
+- **Body** — `i(0)` final stop, after `<n>. `.
+- Keystrokes: `card` `<C-y>` (expand) → `<C-l>` cycles the tag choice → `<C-f>` jumps to the body (deck/number are skipped; function nodes take no jump index). `<C-b>` jumps back.
+
 Other markdown plugins
 ----------------------
 

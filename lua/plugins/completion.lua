@@ -27,8 +27,9 @@ return {
 		-- Custom snippets
 		local fmt = require("luasnip.extras.fmt").fmta
 		local s = luasnip.snippet
-		local t = luasnip.text_node
+		local c = luasnip.choice_node
 		local i = luasnip.insert_node
+		local t = luasnip.text_node
 		local f = luasnip.function_node
 		local d = luasnip.dynamic_node
 		local sn = luasnip.snippet_node
@@ -96,6 +97,74 @@ created_at: "<>"
 					}
 				)
 			),
+			s(
+				"card",
+				fmt(
+					[[
+---
+Deck: <>
+Tags: <>
+
+<>. <>
+---
+]],
+					{
+						f(function()
+							return vim.fn.expand('%:t:r')
+						end),
+						d(1, function()
+							if vim.fn.expand('%:t:r') == 'knowledge' then
+								return sn(nil, {
+									c(1, {
+										t("technical"),
+										t("concepts"),
+										t("words")
+									})
+								})
+							else
+								return sn(nil, {
+									c(1, {
+										t("social"),
+										t("disposition"),
+										t("actions")
+									})
+								})
+							end
+						end
+						),
+						f(function()
+							local card_count = 0
+							local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+							local starts_with = function(str, sub)
+								return string.sub(str, 1, #sub) == sub
+							end
+
+							local found_card = function(idx, line)
+								local prev = lines[idx - 1]
+								local next_line = lines[idx + 1]
+
+								if prev == nil or next_line == nil then
+									return false
+								end
+
+								return starts_with(prev, '---') and
+								    starts_with(line, 'Deck: ') and
+								    starts_with(next_line, 'Tags: ')
+							end
+
+							for idx, line in ipairs(lines) do
+								if found_card(idx, line) then
+									card_count = card_count + 1
+								end
+							end
+
+							return tostring(card_count)
+						end),
+						i(0)
+					}
+				)
+			)
 		})
 
 		cmp.setup({
@@ -111,6 +180,12 @@ created_at: "<>"
 				["<C-n>"] = cmp.mapping.select_next_item(),
 				-- Select the [p]revious item
 				["<C-p>"] = cmp.mapping.select_prev_item(),
+				-- Select from the [l]ist of choices
+				["<C-l>"] = cmp.mapping(function()
+					if luasnip.choice_active() then
+						luasnip.change_choice(1)
+					end
+				end),
 
 				-- Scroll the documentation window [b]ack / [f]orward
 				["<C-->"] = cmp.mapping.scroll_docs(-4),
