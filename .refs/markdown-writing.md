@@ -45,6 +45,16 @@ Card snippet
 - **Body** — `i(0)` final stop, after `<n>. `.
 - Keystrokes: `card` `<C-y>` (expand) → `<C-l>` cycles the tag choice → `<C-f>` jumps to the body (deck/number are skipped; function nodes take no jump index). `<C-b>` jumps back.
 
+Footnote inserter (`<leader>fn`)
+--------------------------------
+
+- Normal-mode map in the ftplugin. Inserts an inline `[^n]` marker, creates the matching `[^n]:` definition, renumbers everything else, and drops you in insert mode on the new definition (`startinsert!`) ready to type the note.
+- **Marker position:** end of the *current word* — just before the next space, so it lands *after* trailing punctuation (`jumps.` → `jumps.[^n]`). No space ahead → end of line.
+- **Numbering** is reading-order: `n` = one past the highest reference at/before the marker. Every existing footnote numbered `>= n` is then bumped up by one. A single `gsub` over `%[%^(%d+)%]` handles **both** inline refs `[^k]` and definition prefixes `[^k]:` (the pattern matches the `[^k]` head of a def line), so refs and defs never drift apart — the bug that sank the original version.
+- **Definition placement:** inserted in ascending order within the run of `[^k]:` defs that follows the current paragraph — after the last def numbered below `n` (so a following def paragraph lower than `n` stays above it; a higher one stays below). Defs are kept **blank-separated, not contiguous**. If no def run follows, it starts its own blank-separated block after the paragraph; at EOF it appends blank + def.
+- **Implementation note:** the whole function reads the buffer into a Lua table, mutates it, and writes back once with `nvim_buf_set_lines(0, 0, -1, …)`. The original mutated the live buffer mid-loop off a stale snapshot (index desync) — rebuild-then-write-once is what makes the renumber correct. Verified with a real-buffer headless test (per the project convention).
+- File top has `local unpack = unpack or table.unpack` — `unpack` is a global in LuaJIT (5.1) but moved to `table.unpack` in 5.2+; the shim keeps `nvim_win_get_cursor` destructuring portable.
+
 Other markdown plugins
 ----------------------
 

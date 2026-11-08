@@ -5,7 +5,7 @@ return {
 	build = ":TSUpdate",
 	config = function()
 		local langs =
-			{ "svelte", "html", "javascript", "typescript", "css", "lua", "go", "python", "markdown", "markdown_inline" }
+			{ "svelte", "html", "javascript", "typescript", "css", "lua", "go", "python", "markdown", "markdown_inline", "sql" }
 
 		require('nvim-treesitter').install(langs)
 

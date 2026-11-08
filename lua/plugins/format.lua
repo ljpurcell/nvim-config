@@ -59,7 +59,7 @@ return {
 				stdin = true,
 			},
 			stir = {
-				command = "/Users/lyndon/go/bin/stir",
+				command = "/opt/homebrew/bin/stir",
 				args = { "--context", "$FILENAME" },
 				stdin = true,
 			},
@@ -75,7 +75,7 @@ return {
 			markdown = { "prettier" },
 			sql = { "sqruff" },
 			javascript = { "biome" },
-			-- json = { "stir" },
+			json = { "stir" },
 			rust = { "rustfmt" },
 			templ = { "templ", "superhtml" },
 			ocaml = { "ocamlformat" },

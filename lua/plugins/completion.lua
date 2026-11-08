@@ -110,7 +110,8 @@ Tags: <>
 ]],
 					{
 						f(function()
-							return vim.fn.expand('%:t:r')
+							local filename = vim.fn.expand('%:t:r')
+							return (filename:gsub("^%l", string.upper))
 						end),
 						d(1, function()
 							if vim.fn.expand('%:t:r') == 'knowledge' then

@@ -10,7 +10,7 @@ Do NOT load these at session start — consult a file only when its topic is rel
 
 | File | Description |
 |------|-------------|
-| `.refs/markdown-writing.md` | Markdown authoring setup (wrap, spell + spelling-as-code-action, em-dash substitution, HTML-entity rendering, frontmatter + card snippets, marksman) and the conceal/render-markdown gotchas behind it |
+| `.refs/markdown-writing.md` | Markdown authoring setup (wrap, spell + spelling-as-code-action, em-dash substitution, HTML-entity rendering, frontmatter + card snippets, `<leader>fn` footnote inserter, marksman) and the conceal/render-markdown gotchas behind it |
 | `.refs/plugin-gotchas.md` | Plugin behaviour worth remembering (flash label mechanics, LuaSnip node return contracts / jump indices / `fmta` gotchas) |
 
 Conventions

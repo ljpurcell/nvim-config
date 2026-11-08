@@ -1,16 +1,15 @@
--- Markdown buffer behaviour: prose-friendly wrapping, spell checking, spelling
--- suggestions surfaced through <leader>ca, and a "--" -> "&mdash;" substitution.
-
 if vim.b.markdown_ftplugin_loaded then
 	return
 end
 vim.b.markdown_ftplugin_loaded = true
 
+local unpack = unpack or table.unpack
+
 -- ---------------------------------------------------------------------------
 -- Prose-friendly soft wrapping
 -- ---------------------------------------------------------------------------
-vim.opt_local.wrap = true -- wrap long lines instead of running off-screen
-vim.opt_local.linebreak = true -- break at word boundaries, not mid-word
+vim.opt_local.wrap = true        -- wrap long lines instead of running off-screen
+vim.opt_local.linebreak = true   -- break at word boundaries, not mid-word
 vim.opt_local.breakindent = true -- keep wrapped lines visually indented
 
 -- Move by visual line, but keep counts working (e.g. 5j still jumps 5 lines).
@@ -71,6 +70,116 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "Keep <leader>ca as spelling/code-action in markdown",
 	callback = map_code_action,
 })
+
+-- ---------------------------------------------------------------------------
+-- Footnotes
+-- ---------------------------------------------------------------------------
+vim.keymap.set("n", "<leader>fn", function()
+	local buf = 0
+	-- nvim_win_get_cursor -> { row (1-based), col (0-based byte index) }
+	local lnum, col = unpack(vim.api.nvim_win_get_cursor(0))
+	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+	-- The marker goes at the end of the word under the cursor: just before the
+	-- next space, so it lands after any trailing punctuation. No space ahead
+	-- means end of line.
+	local space = lines[lnum]:find("%s", col + 1)
+	local at = space and (space - 1) or #lines[lnum]
+
+	-- New footnote number: one past the highest reference at or before the
+	-- marker, so footnotes stay numbered in reading order.
+	local new_num = 0
+	for i = 1, lnum do
+		local scan = (i == lnum) and lines[i]:sub(1, at) or lines[i]
+		for n in scan:gmatch("%[%^(%d+)%]") do
+			new_num = math.max(new_num, tonumber(n))
+		end
+	end
+	new_num = new_num + 1
+
+	-- Shift every existing footnote numbered >= new_num up by one -- both inline
+	-- references "[^k]" and definitions "[^k]:" (the pattern matches the "[^k]"
+	-- prefix of each). Done before inserting so the new marker keeps new_num.
+	for i = 1, #lines do
+		lines[i] = (lines[i]:gsub("%[%^(%d+)%]", function(n)
+			n = tonumber(n)
+			return n >= new_num and ("[^" .. n + 1 .. "]") or nil
+		end))
+	end
+
+	-- Drop the inline reference in at the end of the current word (the prefix up
+	-- to `at` is untouched by the renumber, since those references are < new_num).
+	local marker = "[^" .. new_num .. "]"
+	local line = lines[lnum]
+	lines[lnum] = line:sub(1, at) .. marker .. line:sub(at + 1)
+
+	-- Place the definition with the run of "[^k]:" definitions that follows the
+	-- current paragraph, keeping them in ascending order: it goes after the last
+	-- existing definition numbered below new_num (so a following definition
+	-- paragraph lower than n stays above it). If none qualifies it starts its
+	-- own block right after the paragraph (markdown needs it blank-separated).
+	local defline = marker .. ": "
+	local function defnum(s)
+		local d = s and s:match("^%[%^(%d+)%]:")
+		return d and tonumber(d) or nil
+	end
+
+	-- pe = last non-blank line of the paragraph the cursor sits in.
+	local pe = lnum
+	while pe < #lines and lines[pe + 1] ~= "" do
+		pe = pe + 1
+	end
+
+	-- Walk the following definitions -- one contiguous block or several
+	-- blank-separated paragraphs -- tracking the last one numbered below new_num.
+	local anchor = pe
+	local i = pe + 1
+	while i <= #lines do
+		local n = defnum(lines[i])
+		if n then
+			if n < new_num then
+				anchor = i
+			end
+			i = i + 1
+		elseif lines[i] == "" and defnum(lines[i + 1]) then
+			i = i + 1 -- blank between two definition paragraphs: keep scanning
+		else
+			break -- prose or a wider gap: the definitions have ended
+		end
+	end
+
+	local def_lnum
+	if anchor > pe then
+		-- Blank-separate the new definition from the one above it (and from a
+		-- contiguous higher-numbered definition below, if there is one).
+		table.insert(lines, anchor + 1, "")
+		table.insert(lines, anchor + 2, defline)
+		def_lnum = anchor + 2
+		if defnum(lines[anchor + 3]) then
+			table.insert(lines, anchor + 3, "")
+		end
+	elseif pe < #lines then
+		-- New lowest definition (or none follow): start the block after the
+		-- paragraph, blank-separating it from whatever comes next.
+		table.insert(lines, pe + 2, defline)
+		def_lnum = pe + 2
+		local after = lines[pe + 3]
+		if after ~= nil and after ~= "" then
+			table.insert(lines, pe + 3, "")
+		end
+	else
+		-- Paragraph runs to end of file: add a blank separator then the def.
+		lines[#lines + 1] = ""
+		lines[#lines + 1] = defline
+		def_lnum = #lines
+	end
+
+	vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+	-- Jump to the new definition, ready to type the note.
+	vim.api.nvim_win_set_cursor(0, { def_lnum, 0 })
+	vim.cmd("startinsert!")
+end, { buffer = true, desc = "Insert markdown footnote" })
 
 -- ---------------------------------------------------------------------------
 -- Bold / italic
